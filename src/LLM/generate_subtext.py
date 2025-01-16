@@ -45,6 +45,26 @@ class SubtextGenerator:
 
 
 if __name__ == '__main__':
+#     SubtextGenerator(
+#         prompt='''
+# Argument 1:
+# {arg1}
+
+# Argument 2:
+# {arg2}
+
+# What's the implicit meaning between the arguments?
+#         '''.strip(),
+#         llm_name='gpt-3.5-turbo',
+#         desc='subtext_base',
+#         IDRR_dataframes=IDRRDataFrames(
+#             'pdtb3', 'top', 'Implicit', 
+#             r'D:\ZpWang\Projects\02.05-IDRR_Subtext\IDRR_Subtext\data\used_subtext\pdtb3_top_implicit.subtext2.csv'
+#         ).arg_dic,
+#         data_split='All',
+#         max_sample=10**10,
+#     ).start()
+
     SubtextGenerator(
         prompt='''
 Argument 1:
@@ -58,8 +78,8 @@ What's the implicit meaning between the arguments?
         llm_name='gpt-3.5-turbo',
         desc='subtext_base',
         IDRR_dataframes=IDRRDataFrames(
-            'pdtb3', 'top', 'Implicit', 
-            r'D:\ZpWang\Projects\02.05-IDRR_Subtext\IDRR_Subtext\data\used_subtext\pdtb3_top_implicit.subtext2.csv'
+            'pdtb2', 'top', 'Implicit', 
+            r'D:\ZpWang\Projects\02.05-IDRR_Subtext\IDRR_Subtext\data\used_subtext\pdtb2_top_implicit.subtext.csv'
         ).arg_dic,
         data_split='All',
         max_sample=10**10,
