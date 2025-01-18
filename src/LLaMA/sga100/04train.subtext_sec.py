@@ -2,11 +2,11 @@ from llama_zp import *
 
 
 if __name__ == "__main__":
-    data_name = 'pdtb2'
-    data_path = '/public/home/hongy/zpwang/IDRR_Subtext/data/subtext_llm/pdtb2.gpt-3.5-turbo.subtext_base/pdtb2.gpt-3.5-turbo.subtext_base.csv'
+    data_name = 'pdtb3'
+    data_path = '/public/home/hongy/zpwang/IDRR_Subtext/data/subtext_distilled/pdtb3.llama3.subtext_base.csv'
     dfs = IDRRDataFrames(
         data_name=data_name,
-        data_level='top',
+        data_level='second',
         data_relation='Implicit',
         data_path=data_path,
     )
@@ -20,20 +20,37 @@ Argument 1:
 Argument 2:
 {arg2}
 
-What's the implicit meaning between the arguments?
+{subtext}
+
+What's the discourse relation between Argument 1 and Argument 2?
+A. Comparison.Concession
+B. Comparison.Contrast
+C. Comparison.Similarity
+D. Contingency.Cause
+E. Contingency.Condition
+F. Contingency.Purpose
+G. Expansion.Conjunction
+H. Expansion.Equivalence
+I. Expansion.Instantiation
+J. Expansion.Level-of-detail
+K. Expansion.Manner
+L. Expansion.Substitution
+M. Temporal.Asynchronous
+N. Temporal.Synchronous
+
 '''.strip(),
             "input": '',
-            "output": '{subtext}',
+            "output": '{label11}',
             "system": "",
             "history": [],
         },
-        desc='gpt-3.5_distill_llama',
+        desc='subtext_distilled',
         **dfs.arg_dic,
     )
 
     # model_path = path('/public/home/hongy/pretrained_models/Llama-3-8B-Instruct').resolve()
     model_path = '/public/home/hongy/pretrained_models/Llama-3.2-1B-Instruct'
-    model_path = '/public/home/hongy/pretrained_models/Meta-Llama-3-8B-Instruct'
+    # model_path = '/public/home/hongy/pretrained_models/Meta-Llama-3-8B-Instruct'
     model_path = path(model_path).resolve()
     # print(model_path)
     # print(model_path.exists())
@@ -64,7 +81,7 @@ What's the implicit meaning between the arguments?
         bf16=False,
         fp16=True,
 
-        eval_steps=10**9,  # ===
+        eval_steps=10**10,  # ===
     )
     
     extra_setting = ExtraSetting(
@@ -87,15 +104,14 @@ What's the implicit meaning between the arguments?
         trainer_config=trainer_config,
         extra_setting=extra_setting,
         output_dir=ROOT_DIR/'exp_space'/'Inbox',
-        desc='gpt3.5_distill_llama',
+        desc='subtext_distilled',
         cuda_id=cuda_id,
     )
     main._version_info_list = [
-        Datetime_().format_str(2), data_name, main.desc, 
+        Datetime_().format_str(2), 
+        f'{dfs.data_name}_{dfs.data_level}',
+        main.desc, 
         f'bs{main.trainer_config.per_device_train_batch_size}-{main.trainer_config.gradient_accumulation_steps}_lr{main.trainer_config.learning_rate}_ep{main.trainer_config.num_train_epochs}.train'
     ]
     
     main.start()
-
-
-        

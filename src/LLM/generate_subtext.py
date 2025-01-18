@@ -30,7 +30,7 @@ class SubtextGenerator:
         print('>', target_dir)
         auto_dump(self, target_dir/'args.json')
         df = dfs.get_dataframe(self.data_split)
-        df = df[pd.notna(df['subtext'])]
+        # df = df[pd.notna(df['subtext'])]
         _cnt = self.max_sample
         for p, row in df.iterrows():
             if pd.isna(row['subtext']):
@@ -79,8 +79,9 @@ What's the implicit meaning between the arguments?
         desc='subtext_base',
         IDRR_dataframes=IDRRDataFrames(
             'pdtb2', 'top', 'Implicit', 
-            r'D:\ZpWang\Projects\02.05-IDRR_Subtext\IDRR_Subtext\data\used_subtext\pdtb2_top_implicit.subtext.csv'
+            '/public/home/hongy/zpwang/IDRR_Subtext/data/used_subtext/pdtb2_top_implicit.subtext.csv'
         ).arg_dic,
         data_split='All',
         max_sample=10**10,
+        # max_sample=3,
     ).start()

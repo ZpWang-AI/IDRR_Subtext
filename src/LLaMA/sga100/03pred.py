@@ -6,10 +6,10 @@ if __name__ == "__main__":
     data_split = 'test'
     data_split = 'train'
     dfs = IDRRDataFrames(
-        data_name='pdtb3',
+        data_name='pdtb2',
         data_level='top',
         data_relation='Implicit',
-        data_path='/public/home/hongy/zpwang/LLaMA-Factory_zp/data/subtext_llm/pdtb3.gpt-3.5-turbo.subtext_base/pdtb3.gpt-3.5-turbo.subtext_base.csv'
+        data_path='/public/home/hongy/zpwang/IDRR_Subtext/data/subtext_llm/pdtb2.gpt-3.5-turbo.subtext_base/pdtb2.gpt-3.5-turbo.subtext_base.csv'
     )
     testset_config = IDRRDatasetConfig(
         data_split=data_split,
@@ -21,9 +21,7 @@ Argument 1:
 Argument 2:
 {arg2}
 
-
 What's the implicit meaning between the arguments?
-
 '''.strip(),
             "input": '',
             "output": '{subtext}',
@@ -69,7 +67,7 @@ What's the implicit meaning between the arguments?
         bf16=False,
         fp16=True,
 
-        eval_steps=1000000,
+        eval_steps=10**10,
     )
     
     extra_setting = ExtraSetting(
@@ -109,7 +107,9 @@ What's the implicit meaning between the arguments?
             cuda_id=cuda_id,
         )
         main._version_info_list = [
-            Datetime_().format_str(2), main.desc, 
+            Datetime_().format_str(2), 
+            dfs.data_name,
+            main.desc, 
             # f'bs{main.trainer_config.per_device_train_batch_size}-{main.trainer_config.gradient_accumulation_steps}_lr{main.trainer_config.learning_rate}_ep{main.trainer_config.num_train_epochs}.pred.ckpt-{ckpt_num}'
             f'pred.ckpt-{ckpt_num}',
         ]
