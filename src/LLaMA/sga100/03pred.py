@@ -2,9 +2,9 @@ from llama_zp import *
 
 
 if __name__ == "__main__":
-    data_split = 'dev'
-    data_split = 'test'
     data_split = 'train'
+    data_split = 'test'
+    data_split = 'dev'
     dfs = IDRRDataFrames(
         data_name='pdtb2',
         data_level='top',
@@ -118,7 +118,7 @@ What's the implicit meaning between the arguments?
         # time.sleep(10)
         # exit()
 
-    ckpt_dir = '/public/home/hongy/zpwang/IDRR_Subtext/exp_space/result/2025-01-10_11-02-40._gpt3.5_distill_llama.bs1-8_lr0.0001_ep5.train'
+    ckpt_dir = '/public/home/hongy/zpwang/IDRR_Subtext/exp_space/Inbox/2025-01-17_09-38-55.pdtb2.gpt3.5_distill_llama.bs1-8_lr0.0001_ep5.train'
     ckpt_dir = path(ckpt_dir) / 'src_output'
 
     # to_predict_list = []

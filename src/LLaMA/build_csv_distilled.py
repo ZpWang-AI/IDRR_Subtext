@@ -32,20 +32,32 @@ def build_csv_distilled(
 
 
 if __name__ == '__main__':
+    # build_csv_distilled(
+    #     dfs=IDRRDataFrames(
+    #         'pdtb3',
+    #         'raw',
+    #         'Implicit',
+    #         '/public/home/hongy/zpwang/IDRR_Subtext/data/subtext_llm/pdtb3.gpt-3.5-turbo.subtext_base/pdtb3.gpt-3.5-turbo.subtext_base.csv'
+    #     ),
+    #     train_dir='/public/home/hongy/zpwang/IDRR_Subtext/exp_space/result/2025-01-10_11-02-40.pdtb3_gpt3.5_distill_llama.bs1-8_lr0.0001_ep5.train/2025-01-16_06-31-13.gpt3.5_distill_llama_train.pred.ckpt-final',
+    #     dev_dir='/public/home/hongy/zpwang/IDRR_Subtext/exp_space/result/2025-01-10_11-02-40.pdtb3_gpt3.5_distill_llama.bs1-8_lr0.0001_ep5.train/2025-01-11_11-43-00.gpt3.5_distill_llama_dev.pred.ckpt-final',
+    #     test_dir='/public/home/hongy/zpwang/IDRR_Subtext/exp_space/result/2025-01-10_11-02-40.pdtb3_gpt3.5_distill_llama.bs1-8_lr0.0001_ep5.train/2025-01-11_12-48-08.gpt3.5_distill_llama_test.pred.ckpt-final',
+    #     output_path=path(
+    #         '/public/home/hongy/zpwang/IDRR_Subtext/data',
+    #         'subtext_distilled', 'pdtb3.llama3.subtext_base.csv'
+    #     )
+    # )
     build_csv_distilled(
         dfs=IDRRDataFrames(
-            'pdtb3',
-            'raw',
-            'Implicit',
-            '/public/home/hongy/zpwang/IDRR_Subtext/data/subtext_llm/pdtb3.gpt-3.5-turbo.subtext_base/pdtb3.gpt-3.5-turbo.subtext_base.csv'
+            'pdtb2', 'raw', 'Implicit',
+            '/public/home/hongy/zpwang/IDRR_Subtext/data/subtext_llm/pdtb2.gpt-3.5-turbo.subtext_base/pdtb2.gpt-3.5-turbo.subtext_base.csv'
         ),
-        train_dir='/public/home/hongy/zpwang/IDRR_Subtext/exp_space/result/2025-01-10_11-02-40.pdtb3_gpt3.5_distill_llama.bs1-8_lr0.0001_ep5.train/2025-01-16_06-31-13.gpt3.5_distill_llama_train.pred.ckpt-final',
-        dev_dir='/public/home/hongy/zpwang/IDRR_Subtext/exp_space/result/2025-01-10_11-02-40.pdtb3_gpt3.5_distill_llama.bs1-8_lr0.0001_ep5.train/2025-01-11_11-43-00.gpt3.5_distill_llama_dev.pred.ckpt-final',
-        test_dir='/public/home/hongy/zpwang/IDRR_Subtext/exp_space/result/2025-01-10_11-02-40.pdtb3_gpt3.5_distill_llama.bs1-8_lr0.0001_ep5.train/2025-01-11_12-48-08.gpt3.5_distill_llama_test.pred.ckpt-final',
+        train_dir='/public/home/hongy/zpwang/IDRR_Subtext/exp_space/Inbox/2025-01-17_09-38-55.pdtb2.gpt3.5_distill_llama.bs1-8_lr0.0001_ep5.train/2025-01-18_13-01-58.pdtb2.gpt3.5_distill_llama_train.pred.ckpt-final',
+        dev_dir='/public/home/hongy/zpwang/IDRR_Subtext/exp_space/Inbox/2025-01-17_09-38-55.pdtb2.gpt3.5_distill_llama.bs1-8_lr0.0001_ep5.train/2025-01-19_09-54-52.pdtb2.gpt3.5_distill_llama_dev.pred.ckpt-final',
+        test_dir='/public/home/hongy/zpwang/IDRR_Subtext/exp_space/Inbox/2025-01-17_09-38-55.pdtb2.gpt3.5_distill_llama.bs1-8_lr0.0001_ep5.train/2025-01-19_09-52-55.pdtb2.gpt3.5_distill_llama_test.pred.ckpt-final',
         output_path=path(
-            '/public/home/hongy/zpwang/IDRR_Subtext/data',
-            'subtext_distilled', 'pdtb3.llama3.subtext_base.csv'
+            '/public/home/hongy/zpwang/IDRR_Subtext/data/subtext_distilled',
+            'pdtb2.llama3.subtext_base.csv'
         )
     )
-
         

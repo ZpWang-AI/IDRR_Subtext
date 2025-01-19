@@ -95,5 +95,6 @@ class Analyser:
 
 if __name__ == '__main__':
     Analyser.analyse_all_pred_results(
-        '/public/home/hongy/zpwang/IDRR_Subtext/exp_space/result/2025-01-07_11-59-07.pdtb3_second._baseline.bs1-8_lr0.0001_ep5.train'
+        # '/public/home/hongy/zpwang/IDRR_Subtext/exp_space/result/2025-01-07_11-59-07.pdtb3_second._baseline.bs1-8_lr0.0001_ep5.train'
+        '/public/home/hongy/zpwang/IDRR_Subtext/exp_space/Inbox/2025-01-17_13-38-43.pdtb3_second.subtext_distilled.bs1-8_lr0.0001_ep5.train'
     )

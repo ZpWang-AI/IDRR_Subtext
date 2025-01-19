@@ -4,16 +4,7 @@ from llama_zp import *
 if __name__ == "__main__":
     data_name = 'pdtb3'
     data_path = '/public/home/hongy/zpwang/IDRR_Subtext/data/subtext_distilled/pdtb3.llama3.subtext_base.csv'
-    dfs = IDRRDataFrames(
-        data_name=data_name,
-        data_level='second',
-        data_relation='Implicit',
-        data_path=data_path,
-    )
-    trainset_config = IDRRDatasetConfig(
-        data_split='train',
-        prompt={
-            "instruction": '''
+    instruction = '''
 Argument 1:
 {arg1}
 
@@ -38,7 +29,44 @@ L. Expansion.Substitution
 M. Temporal.Asynchronous
 N. Temporal.Synchronous
 
-'''.strip(),
+'''.strip()
+    
+    data_name = 'pdtb2'
+    data_path = '/public/home/hongy/zpwang/IDRR_Subtext/data/subtext_distilled/pdtb2.llama3.subtext_base.csv'
+    instruction = '''
+Argument 1:
+{arg1}
+
+Argument 2:
+{arg2}
+
+{subtext}
+
+What's the discourse relation between Argument 1 and Argument 2?
+A. Comparison.Concession
+B. Comparison.Contrast
+C. Contingency.Cause
+D. Contingency.Pragmatic cause
+E. Expansion.Alternative
+F. Expansion.Conjunction
+G. Expansion.Instantiation
+H. Expansion.List
+I. Expansion.Restatement
+J. Temporal.Asynchronous
+K. Temporal.Synchrony
+
+'''.strip()
+
+    dfs = IDRRDataFrames(
+        data_name=data_name,
+        data_level='second',
+        data_relation='Implicit',
+        data_path=data_path,
+    )
+    trainset_config = IDRRDatasetConfig(
+        data_split='train',
+        prompt={
+            "instruction": instruction,
             "input": '',
             "output": '{label11}',
             "system": "",
@@ -76,7 +104,7 @@ N. Temporal.Synchronous
 
         gradient_accumulation_steps=8,
         learning_rate=1e-4,
-        num_train_epochs=5,
+        num_train_epochs=10,
         warmup_ratio=0.1,
         bf16=False,
         fp16=True,
