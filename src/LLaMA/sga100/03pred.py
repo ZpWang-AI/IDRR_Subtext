@@ -2,9 +2,9 @@ from llama_zp import *
 
 
 if __name__ == "__main__":
-    data_split = 'train'
     data_split = 'test'
     data_split = 'dev'
+    data_split = 'train'
     dfs = IDRRDataFrames(
         data_name='pdtb2',
         data_level='top',
@@ -71,7 +71,7 @@ What's the implicit meaning between the arguments?
     )
     
     extra_setting = ExtraSetting(
-        rest_mem_mb=10000,
+        rest_mem_mb=1000000,
         wait_before_start=3,
         output_scores=True,
         do_dev=False,
@@ -84,8 +84,8 @@ What's the implicit meaning between the arguments?
         device_range=None,
     )
 
-    def predict(ckpt_path, ckpt_num):
-        trainer_config.adapter_name_or_path = ckpt_path
+    def predict(ckpt_dir, output_dir, ckpt_num):
+        trainer_config.adapter_name_or_path = ckpt_dir
 
         testset_config.set_create_time()
         trainer_config.set_create_time()
@@ -102,7 +102,7 @@ What's the implicit meaning between the arguments?
             trainer_config=trainer_config,
             extra_setting=extra_setting,
             # output_dir=ROOT_DIR/'exp_space'/'Inbox',
-            output_dir=ckpt_dir.parent,
+            output_dir=output_dir,
             desc=f'gpt3.5_distill_llama_{data_split}',
             cuda_id=cuda_id,
         )
@@ -111,15 +111,17 @@ What's the implicit meaning between the arguments?
             dfs.data_name,
             main.desc, 
             # f'bs{main.trainer_config.per_device_train_batch_size}-{main.trainer_config.gradient_accumulation_steps}_lr{main.trainer_config.learning_rate}_ep{main.trainer_config.num_train_epochs}.pred.ckpt-{ckpt_num}'
-            f'pred.ckpt-{ckpt_num}',
+            f'pdtb2_pred.ckpt-{ckpt_num}',
         ]
         
         main.start()
         # time.sleep(10)
         # exit()
 
-    ckpt_dir = '/public/home/hongy/zpwang/IDRR_Subtext/exp_space/Inbox/2025-01-17_09-38-55.pdtb2.gpt3.5_distill_llama.bs1-8_lr0.0001_ep5.train'
-    ckpt_dir = path(ckpt_dir) / 'src_output'
+    ckpt_dir = '/public/home/hongy/zpwang/IDRR_Subtext/exp_space/result/distill_llama/2025-01-10_11-02-40.pdtb3_gpt3.5_distill_llama.bs1-8_lr0.0001_ep5.train/src_output/checkpoint-10665'
+    ckpt_dir = path(ckpt_dir)
+    output_dir = ckpt_dir.parent.parent
+    # ckpt_dir = path(ckpt_dir) / 'src_output'
 
     # to_predict_list = []
     # for p in sorted(listdir_full_path(ckpt_dir)):
@@ -129,5 +131,9 @@ What's the implicit meaning between the arguments?
     # to_predict_list.sort(key=lambda x:int(x[1]))
     # for a,b in to_predict_list:
     #     predict(a,b)
-    predict(ckpt_dir, 'final')
+    predict(
+        ckpt_dir=ckpt_dir,
+        output_dir=output_dir, 
+        ckpt_num='final',
+    )
         

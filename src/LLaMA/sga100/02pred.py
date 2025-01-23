@@ -1,5 +1,4 @@
-from __head import *
-from main import *
+from llama_zp import *
 
 
 if __name__ == "__main__":
@@ -7,12 +6,9 @@ if __name__ == "__main__":
         data_name='pdtb3',
         data_level='second',
         data_relation='Implicit',
-        data_path=ROOT_DIR/'data'/'used'/'pdtb3.p2.csv'
+        data_path='/public/home/hongy/zpwang/LLaMA-Factory_zp/data/used/pdtb3.p2.csv'
     )
-    testset_config = IDRRDatasetConfig(
-        data_split='test',
-        prompt={
-            "instruction": '''
+    instruction = '''
 Argument 1:
 {arg1}
 
@@ -35,7 +31,40 @@ L. Expansion.Substitution
 M. Temporal.Asynchronous
 N. Temporal.Synchronous
 
-'''.strip(),
+'''.strip()
+    
+    dfs = IDRRDataFrames(
+        data_name='pdtb2',
+        data_level='second',
+        data_relation='Implicit',
+        data_path='/public/home/hongy/zpwang/LLaMA-Factory_zp/data/used/pdtb2.p2.csv'
+    )
+    instruction = '''
+Argument 1:
+{arg1}
+
+Argument 2:
+{arg2}
+
+What's the discourse relation between Argument 1 and Argument 2?
+A. Comparison.Concession
+B. Comparison.Contrast
+C. Contingency.Cause
+D. Contingency.Pragmatic cause
+E. Expansion.Alternative
+F. Expansion.Conjunction
+G. Expansion.Instantiation
+H. Expansion.List
+I. Expansion.Restatement
+J. Temporal.Asynchronous
+K. Temporal.Synchrony
+
+'''.strip()
+    
+    testset_config = IDRRDatasetConfig(
+        data_split='test',
+        prompt={
+            "instruction": instruction,
             "input": '',
             "output": '{label11}',
             "system": "",
@@ -109,7 +138,7 @@ N. Temporal.Synchronous
             cuda_cnt=1,
             device_range=[int(cuda_id)],
         )
-        main = LLaMA(
+        main = LLaMA_zp(
             trainset_config=OneShotDatasetConfig(),
             testset_config=testset_config,
             trainer_config=trainer_config,
@@ -129,7 +158,7 @@ N. Temporal.Synchronous
         # time.sleep(10)
         # exit()
 
-    ckpt_dir = '/public/home/hongy/zpwang/LLaMA-Factory_zp/exp_space/Inbox/2025-01-07_11-59-07.pdtb3_second._baseline.bs1-8_lr0.0001_ep5.train'
+    ckpt_dir = '/public/home/hongy/zpwang/IDRR_Subtext/exp_space/Inbox/2025-01-22_11-29-15.pdtb2_second._baseline.bs1-8_lr0.0001_ep5.train'
     ckpt_dir = path(ckpt_dir) / 'src_output'
 
     to_predict_list = []

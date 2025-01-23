@@ -103,7 +103,7 @@ K. Temporal.Synchrony
         overwrite_output_dir=True,
 
         gradient_accumulation_steps=8,
-        learning_rate=1e-4,
+        learning_rate=5e-5,
         num_train_epochs=10,
         warmup_ratio=0.1,
         bf16=False,
