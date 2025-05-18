@@ -1,68 +1,25 @@
 from llama_zp import *
 
+from _data_constants import *
+
 
 if __name__ == "__main__":
+    data_name = 'pdtb3'
+    data_path = DATA_PATH_PDTB3_SUBTEXT
+    instruction = INSTRUCTION_PDTB3_BASE
+    # data_name = 'pdtb2'
+    # data_path = DATA_PATH_PDTB2_SUBTEXT
+    # instruction = INSTRUCTION_PDTB2_BASE
+
     dfs = IDRRDataFrames(
-        data_name='pdtb3',
+        data_name=data_name,
         data_level='second',
         data_relation='Implicit',
-        data_path='/public/home/hongy/zpwang/LLaMA-Factory_zp/data/used/pdtb3.p2.csv'
+        data_path=data_path
     )
-    instruction = '''
-Argument 1:
-{arg1}
-
-Argument 2:
-{arg2}
-
-What's the discourse relation between Argument 1 and Argument 2?
-A. Comparison.Concession
-B. Comparison.Contrast
-C. Comparison.Similarity
-D. Contingency.Cause
-E. Contingency.Condition
-F. Contingency.Purpose
-G. Expansion.Conjunction
-H. Expansion.Equivalence
-I. Expansion.Instantiation
-J. Expansion.Level-of-detail
-K. Expansion.Manner
-L. Expansion.Substitution
-M. Temporal.Asynchronous
-N. Temporal.Synchronous
-
-'''.strip()
-    
-    dfs = IDRRDataFrames(
-        data_name='pdtb2',
-        data_level='second',
-        data_relation='Implicit',
-        data_path='/public/home/hongy/zpwang/LLaMA-Factory_zp/data/used/pdtb2.p2.csv'
-    )
-    instruction = '''
-Argument 1:
-{arg1}
-
-Argument 2:
-{arg2}
-
-What's the discourse relation between Argument 1 and Argument 2?
-A. Comparison.Concession
-B. Comparison.Contrast
-C. Contingency.Cause
-D. Contingency.Pragmatic cause
-E. Expansion.Alternative
-F. Expansion.Conjunction
-G. Expansion.Instantiation
-H. Expansion.List
-I. Expansion.Restatement
-J. Temporal.Asynchronous
-K. Temporal.Synchrony
-
-'''.strip()
-    
     testset_config = IDRRDatasetConfig(
         data_split='test',
+        # data_split='train',
         prompt={
             "instruction": instruction,
             "input": '',
@@ -70,7 +27,7 @@ K. Temporal.Synchrony
             "system": "",
             "history": [],
         },
-        desc='base_multi-choice',
+        desc='base_multi-choice2',
         **dfs.arg_dic,
     )
 
@@ -123,11 +80,14 @@ K. Temporal.Synchrony
     cuda_id = CUDAUtils.set_cuda_visible(
         target_mem_mb=target_mem_mb,
         cuda_cnt=1,
-        device_range=None,
+        device_range=[1],
     )
 
-    def predict(ckpt_path, ckpt_num):
-        trainer_config.adapter_name_or_path = ckpt_path
+    def predict(ckpt_dir, ckpt_num, output_dir=None):
+        ckpt_dir = path(ckpt_dir)
+        if output_dir is None:
+            output_dir = ckpt_dir.parent.parent
+        trainer_config.adapter_name_or_path = ckpt_dir
 
         testset_config.set_create_time()
         trainer_config.set_create_time()
@@ -144,7 +104,7 @@ K. Temporal.Synchrony
             trainer_config=trainer_config,
             extra_setting=extra_setting,
             # output_dir=ROOT_DIR/'exp_space'/'Inbox',
-            output_dir=ckpt_dir.parent,
+            output_dir=output_dir,
             desc='_baseline',
             cuda_id=cuda_id,
         )
@@ -153,12 +113,18 @@ K. Temporal.Synchrony
             # f'bs{main.trainer_config.per_device_train_batch_size}-{main.trainer_config.gradient_accumulation_steps}_lr{main.trainer_config.learning_rate}_ep{main.trainer_config.num_train_epochs}.pred.ckpt-{ckpt_num}'
             f'pred.ckpt-{ckpt_num}',
         ]
+        if testset_config.data_split != 'test':
+            main._version_info_list.append(testset_config.data_split)
         
         main.start()
         # time.sleep(10)
         # exit()
 
-    ckpt_dir = '/public/home/hongy/zpwang/IDRR_Subtext/exp_space/Inbox/2025-01-22_11-29-15.pdtb2_second._baseline.bs1-8_lr0.0001_ep5.train'
+    # predict('/public/home/hongy/zpwang/IDRR_Subtext/exp_space/result/pdtb2_sec/2025-02-03_06-46-27.pdtb2_second._baseline.bs1-8_lr0.0001_ep5.train/src_output/checkpoint-7000', '7000')
+    predict('/public/home/hongy/zpwang/IDRR_Subtext/exp_space/result/pdtb3_sec/cssf/baseline.checkpoint-10000', '10000', '/public/home/hongy/zpwang/IDRR_Subtext/exp_space/result/pdtb3_sec/cssf')
+    exit()
+
+    ckpt_dir = '/public/home/hongy/zpwang/IDRR_Subtext/exp_space/Inbox/2025-02-03_06-46-27.pdtb2_second._baseline.bs1-8_lr0.0001_ep5.train'
     ckpt_dir = path(ckpt_dir) / 'src_output'
 
     to_predict_list = []
@@ -169,5 +135,5 @@ K. Temporal.Synchrony
     to_predict_list.sort(key=lambda x:int(x[1]))
     for a,b in to_predict_list:
         predict(a,b)
-    predict(ckpt_dir, 'final')
+    # predict(ckpt_dir, 'final')
         

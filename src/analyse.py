@@ -14,7 +14,7 @@ class Analyser:
         for line in pred_results:
             preds.append(line['output_str'][0])
             labels.append(line['label_str'][0])
-        metrics = cls._cal_metric(preds, labels)
+        metrics = cls.cal_metric(preds, labels)
 
         auto_dump(
             metrics,
@@ -27,7 +27,7 @@ class Analyser:
         pass
 
     @classmethod
-    def _cal_metric(cls, preds:List[str], labels:List[str]):
+    def cal_metric(cls, preds:List[str], labels:List[str]):
         tot = len(preds)
         assert len(preds)==len(labels)
         # print(labels)
@@ -59,6 +59,7 @@ class Analyser:
     @classmethod
     def analyse_all_pred_results(cls, root_dir):
         xs, ys = [], []
+        max_f1, max_f1_metrics = -1, None
         wrong_outputs = []
         for _dir in listdir_full_path(root_dir):
             # print(_dir)
@@ -73,7 +74,15 @@ class Analyser:
                 xs.append(ckpt_num)
                 ys.append(metrics['macro-f1'])
                 wrong_outputs.extend(metrics['wrong'])
+                if metrics['macro-f1'] > max_f1:
+                    metrics['ckpt'] = ckpt_num
+                    max_f1 = metrics['macro-f1']
+                    max_f1_metrics = metrics
 
+        auto_dump(
+            max_f1_metrics, 
+            path(root_dir, f'test_best_result.json')
+        )
         auto_dump(
             wrong_outputs,
             path(root_dir, 'wrong_outputs.json')
@@ -94,11 +103,18 @@ class Analyser:
 
 
 if __name__ == '__main__':
-    root_dir = '''
+# /public/home/hongy/zpwang/IDRR_Subtext/exp_space/Inbox/2025-01-22_11-29-15.pdtb2_second._baseline.bs1-8_lr0.0001_ep5.train
+# /public/home/hongy/zpwang/IDRR_Subtext/exp_space/Inbox/2025-02-03_06-46-27.pdtb2_second._baseline.bs1-8_lr0.0001_ep5.train
+    root_dir_lst = '''
 
-/public/home/hongy/zpwang/IDRR_Subtext/exp_space/Inbox/2025-01-22_11-29-15.pdtb2_second._baseline.bs1-8_lr0.0001_ep5.train
+/public/home/hongy/zpwang/IDRR_Subtext/exp_space/result/pdtb2_sec/2025-01-22_09-12-06.pdtb2_second.subtext_distilled.bs1-8_lr5e-05_ep10.train
 
-'''.strip()
-    Analyser.analyse_all_pred_results(
-        root_dir=root_dir
-    )
+/public/home/hongy/zpwang/IDRR_Subtext/exp_space/result/pdtb2_sec/2025-01-19_12-07-41.pdtb2_second.subtext_distilled.bs1-8_lr0.0001_ep10.train
+
+'''.strip().split()
+    for root_dir in root_dir_lst:
+        if not root_dir:
+            continue
+        Analyser.analyse_all_pred_results(
+            root_dir=root_dir
+        )

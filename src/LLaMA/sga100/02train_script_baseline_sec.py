@@ -1,65 +1,22 @@
 from llama_zp import *
 
+from _data_constants import *
+
 
 if __name__ == "__main__":
+    # data_name = 'pdtb3'
+    # data_path = DATA_PATH_PDTB3_BASE
+    # instruction = INSTRUCTION_PDTB3_BASE
+    data_name = 'pdtb2'
+    data_path = DATA_PATH_PDTB2_BASE
+    instruction = INSTRUCTION_PDTB2_BASE
+
     dfs = IDRRDataFrames(
-        data_name='pdtb3',
+        data_name=data_name,
         data_level='second',
         data_relation='Implicit',
-        data_path='/public/home/hongy/zpwang/LLaMA-Factory_zp/data/used/pdtb3.p2.csv'
+        data_path=data_path,
     )
-    instruction = '''
-Argument 1:
-{arg1}
-
-Argument 2:
-{arg2}
-
-What's the discourse relation between Argument 1 and Argument 2?
-A. Comparison.Concession
-B. Comparison.Contrast
-C. Comparison.Similarity
-D. Contingency.Cause
-E. Contingency.Condition
-F. Contingency.Purpose
-G. Expansion.Conjunction
-H. Expansion.Equivalence
-I. Expansion.Instantiation
-J. Expansion.Level-of-detail
-K. Expansion.Manner
-L. Expansion.Substitution
-M. Temporal.Asynchronous
-N. Temporal.Synchronous
-
-'''.strip()
-    
-    dfs = IDRRDataFrames(
-        data_name='pdtb2',
-        data_level='second',
-        data_relation='Implicit',
-        data_path='/public/home/hongy/zpwang/LLaMA-Factory_zp/data/used/pdtb2.p2.csv'
-    )
-    instruction = '''
-Argument 1:
-{arg1}
-
-Argument 2:
-{arg2}
-
-What's the discourse relation between Argument 1 and Argument 2?
-A. Comparison.Concession
-B. Comparison.Contrast
-C. Contingency.Cause
-D. Contingency.Pragmatic cause
-E. Expansion.Alternative
-F. Expansion.Conjunction
-G. Expansion.Instantiation
-H. Expansion.List
-I. Expansion.Restatement
-J. Temporal.Asynchronous
-K. Temporal.Synchrony
-
-'''.strip()
 
     trainset_config = IDRRDatasetConfig(
         data_split='train',

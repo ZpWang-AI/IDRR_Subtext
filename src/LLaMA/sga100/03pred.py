@@ -2,14 +2,14 @@ from llama_zp import *
 
 
 if __name__ == "__main__":
-    data_split = 'test'
-    data_split = 'dev'
     data_split = 'train'
+    data_split = 'dev'
+    data_split = 'test'
     dfs = IDRRDataFrames(
-        data_name='pdtb2',
+        data_name='pdtb3',
         data_level='top',
         data_relation='Implicit',
-        data_path='/public/home/hongy/zpwang/IDRR_Subtext/data/subtext_llm/pdtb2.gpt-3.5-turbo.subtext_base/pdtb2.gpt-3.5-turbo.subtext_base.csv'
+        data_path='/public/home/hongy/zpwang/IDRR_Subtext/data/used/pdtb3.p2.csv'
     )
     testset_config = IDRRDatasetConfig(
         data_split=data_split,
@@ -108,10 +108,10 @@ What's the implicit meaning between the arguments?
         )
         main._version_info_list = [
             Datetime_().format_str(2), 
-            dfs.data_name,
+            dfs.data_name, data_split,
             main.desc, 
             # f'bs{main.trainer_config.per_device_train_batch_size}-{main.trainer_config.gradient_accumulation_steps}_lr{main.trainer_config.learning_rate}_ep{main.trainer_config.num_train_epochs}.pred.ckpt-{ckpt_num}'
-            f'pdtb2_pred.ckpt-{ckpt_num}',
+            f'ckpt-{ckpt_num}',
         ]
         
         main.start()
