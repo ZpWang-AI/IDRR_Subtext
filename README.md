@@ -2,9 +2,13 @@
 
 Using subtexts on IDRR.
 
+`The repo is currently under construction and improvement.`
+
 # Requirements
 
-- [utils_zp](https://github.com/ZpWang-AI/utils_zp.git)
-- [IDRR_data](https://github.com:ZpWang-AI/IDRR_data.git)
-- [LLM_API](https://github.com:ZpWang-AI/LLM_API.git)
-- [llama_zp](https://github.com:ZpWang-AI/LLaMA-Factory_zp.git)
+- [utils_zp](https://github.com/ZpWang-AI/utils_zp)
+- [IDRR_data](https://github.com:ZpWang-AI/IDRR_data)
+- [LLM_API](https://github.com:ZpWang-AI/LLM_API)
+<!-- - [llama_zp](https://github.com:ZpWang-AI/LLaMA-Factory_zp) -->
+- [LLaMA-Factory_zp](https://github.com:ZpWang-AI/LLaMA-Factory_zp)
+
